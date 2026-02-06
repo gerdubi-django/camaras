@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: nvr
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/nvr
+      FERNET_KEY: ${FERNET_KEY}
+      HLS_ROOT: /app/hls
+      FFMPEG_BINARY: ffmpeg
+      MAX_CONCURRENT_STREAMS: 16
+    volumes:
+      - ./backend/app:/app/app
+      - ./backend/hls:/app/hls
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  ui:
+    build:
+      context: ./ui
+    environment:
+      VITE_API_URL: http://localhost:8000
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
