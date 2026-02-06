@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+backend/hls/
+*.db
+ui/node_modules/
+ui/dist/

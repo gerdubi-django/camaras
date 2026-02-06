@@ -1,0 +1,36 @@
+[project]
+name = "nvr-multi-viewer-backend"
+version = "0.1.0"
+description = "Backend for NVR Multi-Viewer"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.0",
+  "sqlalchemy>=2.0.30",
+  "psycopg[binary]>=3.2.0",
+  "alembic>=1.13.0",
+  "pydantic-settings>=2.3.0",
+  "python-multipart>=0.0.9",
+  "httpx>=0.27.0",
+  "requests>=2.32.0",
+  "cryptography>=43.0.0",
+  "python-json-logger>=2.0.7"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0",
+  "pytest-asyncio>=0.23.7",
+  "ruff>=0.6.0"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["app"]
+asyncio_mode = "auto"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
